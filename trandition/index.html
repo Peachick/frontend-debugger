@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Front-debugger</title>
+</head>
+<body>
+  <button id="btn">点我</button>
+  <div class="domDebugger">
+    <button>增加节点</button>
+    <button>删除节点</button>
+    <button>删除自己</button>
+    <button>更新子节点</button>
+    <button>更新子节点属性</button>
+    <button>更新当前元素属性</button>
+  </div>
+  <ul class="list">
+    <li>1</li>
+    <li>2</li>
+  </ul>
+
+  <script>
+    const dbtns = document.querySelectorAll('.domDebugger button');
+    const list = document.querySelector('.list');
+    dbtns[0].addEventListener('click', () => {
+      const li = document.createElement('li');
+      li.innerText = '新增的节点';
+      list.appendChild(li);
+    });
+    dbtns[1].addEventListener('click', () => {
+      list.removeChild(list.lastElementChild);
+    });
+    dbtns[2].addEventListener('click', () => {
+      list.remove();
+    });
+    dbtns[3].addEventListener('click', () => {
+      const li = document.createElement('li');
+      li.innerText = '更新的节点';
+      list.replaceChild(li, list.lastElementChild);
+    });
+    dbtns[4].addEventListener('click', () => {
+      list.lastElementChild.setAttribute('class', 'li-class');
+    });
+    dbtns[5].addEventListener('click', () => {
+      list.setAttribute('class', 'newclass');
+    });
+  </script>
+
+  <script src="./index.js"></script>
+  <script>
+
+  </script>
+</body>
+</html>
