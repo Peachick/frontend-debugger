@@ -22,15 +22,15 @@ node inspect index.js
 打开浏览器输入`chrome://inspect`，在`Devices`tab中的`Discover network targets`中配置`localhost:9229`，端口对应node的debugger server的端口就可以了，配置好后，就会发现下面`Remove Target`里会发现node的debugger server，点击`inspect`会打开新的调试窗口，就可以在浏览器中调试了，和在浏览器调试一模一样，关闭调试窗口后，会结束调试
 
 启动：
-![](imgs/1.png)
-![](imgs/5.png)
+![](./static/imgs/1.png)
+![](./static/imgs/5.png)
 上面两种启动都会在首行断住
 
 用Chrome DevTools连接：
-![](imgs/2.png)
-![](imgs/3.png)
+![](./static/imgs/2.png)
+![](./static/imgs/3.png)
 调试：
-![](imgs/4.png)
+![](./static/imgs/4.png)
 
 ### node debugger模式+vscode调试
 同上，用node debugger模式启动，会开启node debugger server，然后通过vscode连接这个server就可以调试了
@@ -60,8 +60,8 @@ node inspect index.js
 ```
 配置好`client server`后，点击`vscode 左侧 debugger`选项切换成调试面板，做上面like播放键就可以看到刚刚配置的调试名字，如果有多个时，可以选择，和其他IDE调试类似，点击播放键，就开始调试了，这个就直接在vscode中调试了，调试面板中会和Chrome一样有`作用域`、`变量`、`调用堆栈`等信息，如果你熟悉Java的IDE调试这个没啥问题
 
-![](imgs/7.png)
-![](imgs/6.png)
+![](./static/imgs/7.png)
+![](./static/imgs/6.png)
 
 ### 仅vscode调试
 上面都是要在命令行启动node debugger模式开启debugger server，在启动一个server client去连接server，总体来说有点麻烦，可以用vscode将两者异步完成
@@ -82,7 +82,7 @@ node inspect index.js
   ]
 }
 ```
-![](imgs/8.png)
+![](./static/imgs/8.png)
 
 ### 调试需编译的程序
 
@@ -101,8 +101,8 @@ function clickCB(e) {
 }
 
 ```
-![](./imgs/22.png)
-![](./imgs/23.png)
+![](./static/imgs/22.png)
+![](./static/imgs/23.png)
 
 2. 条件断点
 同样这里也是先在源码中指定位置debugger，或者如果你的源码并没有采取打包，源码好找的情况下可以直接在浏览器中找到对应的js文件直接打个条件注释断点就行
@@ -113,12 +113,12 @@ const add = (x, y) => {
   return x + y;
 }
 ```
-![](./imgs/24.png)
-![](./imgs/25.png)
-![](./imgs/26.png)
-![](./imgs/27.png)
+![](./static/imgs/24.png)
+![](./static/imgs/25.png)
+![](./static/imgs/26.png)
+![](./static/imgs/27.png)
 3. DOM断点
-![](./imgs/28.png)
+![](./static/imgs/28.png)
 DOM断点只能在浏览器中调试，有三种：
 - subtree modifications
 - attribute modifications
@@ -168,23 +168,87 @@ DOM断点只能在浏览器中调试，有三种：
 ```
 - subtree modifications
 节点监听:
-![](./imgs/29.png)
+![](./static/imgs/29.png)
 当监听子节点变化时，只有当子节点(node)发生变化时，才会监听的到，如：`子节点替换`、`子节点删除`、`子节点增加`、`子节点的字节点变化(像：文本节点、注释节点、元素节点等等都会监听的到)`，但是节点的属性发生变化不会监听到
-![](./imgs/30.png)
+![](./static/imgs/30.png)
 当点击上面的删除节点时就会被监听到，如上图；而当点击更新子节点属性或者当前元素属性时反而监听不到的
 - attribute modifications
 属性监听:
-![](./imgs/31.png)
+![](./static/imgs/31.png)
 监听当前元素属性发生变化时，而子节点属性变化监听不到;(想监听子节点的属性变化或者或者节点变化可以用开头提到的`MutatorObserver`API)
 当点击更新当前元素属性时如下图所示，点击更新子节点属性不会监听到
-![](./imgs/32.png)
+![](./static/imgs/32.png)
 - node removal
-![](./imgs/34.png)
+![](./static/imgs/34.png)
 这个只监听当前元素被删除，子几点的改变不会监听到，比较单一
 当点击删除自己就会监听到
-![](./imgs/33.png)
+![](./static/imgs/33.png)
 
 > 除了单独监听外，还可以同时监听三种类型，只要勾选上就行；除了这种调试，也可以通过前面提到的`MutatorObserver`API来调试
+
+4. URL断点
+添加对XHR的请求url的断点，当浏览器发起http请求时，如果`断点的url包含请求url`，就会打住断点
+```js
+// 假如下面代码，点击按钮发起请求
+const fetchApi = async () => {
+	try {
+		const rs = await fetch("http://localhost:3001/xxxx")
+		const data = await rs.json()
+		console.log(data)
+	} catch(err) {
+		console.log(err)
+	}
+}
+const btn = document.querySelector('#btn');
+btn.addEventListener('click', fetchApi)
+
+// ===== 服务代码 =====
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.json({
+    code: 200,
+    message: 'Hello World',
+  })
+})
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+})
+```
+以上请求`http://localhost:3001`服务，现在我们在浏览器中添加对应的断点
+![](./static/imgs/35.png)
+![](./static/imgs/36.png)
+
+5. 时间监听断点
+监听对应的事件当触发时就会打住断点，如：点击、鼠标、键盘事件等等
+```js
+// 假如给一个元素绑定click、mouseover事件
+// <div id="box" />
+const target = document.querySelector("#box")
+target.addEventListener("click", () => console.log('click...'))
+target.addEventListener("mouseover", () => console.log('mouseover...'))
+```
+在浏览器上打上对应的断点
+![](./static/imgs/37.png)
+![](./static/imgs/38.png)
+![](./static/imgs/39.png)
+
+6. 异常断点
+异常断点可以在vscode中设置，如果抛出异常就会打住断点
+添加vscode调试配置:
+```json
+{
+	"name": "Debugger Exception",
+	"request": "launch",
+	"type": "chrome",
+	"url": "http://localhost:5500",
+	"webRoot": "${workspaceFolder}/trandition"
+},
+```
+```js
+// 主动抛出错误
+throw new Error('This is a test error');
+```
+![](./static/imgs/40.png)
 
 ### 调试React
 React项目，用react-create-app启动项目，然后添加.vscode配置，点击debugger，在vscode中打个断点，就可以在vscode中调试代码了
@@ -197,7 +261,7 @@ React项目，用react-create-app启动项目，然后添加.vscode配置，点�
 	"webRoot": "${workspaceFolder}"
 }
 ```
-![](imgs/20.png)
+![](./static/imgs/20.png)
 
 ### 调试Vue
 目前用vite或者webpack生成的vue项目目前这样的都可以这样调试，以前的wepack要用sourcemap进行映射
@@ -214,7 +278,7 @@ React项目，用react-create-app启动项目，然后添加.vscode配置，点�
 	}
 }
 ```
-![](imgs/21.png)
+![](./static/imgs/21.png)
 
 ## 线上调试（异常上报+监控系统+map映射）
 假如有一个场景，开发好的项目上线后，发现一个bug报错了，潜意识下会打开控制台看下哪里错了，但不幸的是，一般上线项目都会打包压缩，而且不会有soucemap，这让错误排查变得棘手。
@@ -222,25 +286,25 @@ React项目，用react-create-app启动项目，然后添加.vscode配置，点�
 通常情况在发布生产时，同时生成soucemap，将soucemap放到指定位置，用来和生产环境错误做映射，这样就可以在开发环境中查看错误的位置了，这样就可以更快的解决错误了，同时也能将错误记录到系统中
 
 假如发布一个react项目如下：
-![](imgs/9.png)
+![](./static/imgs/9.png)
 代码很简单，点击按钮手动抛出一个错误，现在发布上线，当点击按钮时就会报错
-![](imgs/10.png)
-![](imgs/11.png)
+![](./static/imgs/10.png)
+![](./static/imgs/11.png)
 潜意识下打开控制台点击报错信息，带我们去目标文件，发现竟是打包后的，顿时懵逼，一头雾水；不嫌麻烦的同学可能会在本地重启项目排查，但不同环境数据可能不同，导致也很难排查，那为何不直接线上排查呢
 
 通过映射线上环境的sourcemap，不就可以查找到错误位置了吗
 
 ### 手动添加
 
-![](imgs/12.png)
-![](imgs/13.png)
-![](imgs/14.png)
-![](imgs/15.png)
-![](imgs/16.png)
-![](imgs/17.png)
-![](imgs/18.png)
+![](./static/imgs/12.png)
+![](./static/imgs/13.png)
+![](./static/imgs/14.png)
+![](./static/imgs/15.png)
+![](./static/imgs/16.png)
+![](./static/imgs/17.png)
+![](./static/imgs/18.png)
 Vue项目同理
-![](imgs/19.png)
+![](./static/imgs/19.png)
 
 ### 自动映射
 
