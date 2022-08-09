@@ -6,7 +6,7 @@ const vlq = require('vlq');
 const sorcemap = require('source-map');
 const port = 9999;
 
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(async (req, res, next) => {
   const targetmap = fs.readFileSync(path.resolve(__dirname, 'public/sourcemap/main.fb81151a.js.map'), 'utf8');
@@ -31,6 +31,12 @@ app.use((req, res, next) => {
     message: 'OK'
   })
 })
+
+// TODO: 前端错误SDK
+// TODO: 错误日志上报及处理
+// TODO: sourcemap储存
+// TODO: 请求解析sourcemap映射
+// TODO: 后台监控系统可视化显示错误信息
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
