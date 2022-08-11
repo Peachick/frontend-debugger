@@ -1,0 +1,9 @@
+{
+  "name": "webpack-project",
+  "scripts": {
+    "dev": "webpack-dev-server --config webpack.config.js"
+  },
+  "dependencies": {
+    "sdk-helper": "0.1.0"
+  }
+}
