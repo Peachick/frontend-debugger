@@ -11,6 +11,11 @@ module.exports = {
     filename: 'bundle.js',
     path: resolve('dist')
   },
+  devtool: 'source-map',
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    mainFields: ['module', 'jsnext:main', 'main'],
+  },
   devServer: {
     port: 9000,
     hot: true,

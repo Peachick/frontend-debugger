@@ -1,3 +1,6 @@
-export function _testing() {
-  console.log("_testing");
+export * from "./error-core";
+import { initCodeError } from "./error-core";
+
+export function init() {
+  initCodeError();
 }

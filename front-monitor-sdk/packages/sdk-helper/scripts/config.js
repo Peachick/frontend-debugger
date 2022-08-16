@@ -69,6 +69,8 @@ export function getConfig(name) {
   };
   if (process.env.TARGET) {
     config.output.sourcemap = true;
+  }
+  if (process.env.SERVE) {
     config.plugins.push(
       serve({
         open: true,

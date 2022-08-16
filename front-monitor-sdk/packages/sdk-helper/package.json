@@ -12,6 +12,7 @@
   "scripts": {
     "clear": "rimraf dist",
     "dev": "pnpm clear && rollup -w -c scripts/config.js --environment TARGET:es",
+    "serve": "pnpm clear && rollup -w -c scripts/config.js --environment TARGET:es --environment SERVE:true",
     "build": "pnpm clear && rollup -c scripts/build.js"
   },
   "author": {
