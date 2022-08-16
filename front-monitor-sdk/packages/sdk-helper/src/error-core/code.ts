@@ -58,10 +58,31 @@ export function initCodeError() {
   );
 }
 
-function beautyError(event: ErrorEvent, ltEvent: Event | null) {
+// 数据封装
+interface IReportBaseData {
+  type: string;
+  message: string;
+  position: string;
+  ip?: string;
+}
+interface IReportWebData extends IReportBaseData {
+  ttl: number;
+  stack: string;
+  selector: string;
+  screenWidth: number;
+  screenHeight: number;
+  platform: string;
+}
+function beautyError(event: ErrorEvent, ltEvent: Event | null): IReportWebData {
   return {
+    ttl: Date.now(),
+    type: event.type,
+    screenWidth: window.screen.width,
+    screenHeight: window.screen.height,
     message: event.message,
     stack: event.error.stack,
+    position: `${event?.lineno}:${event?.colno}`,
     selector: ltEvent ? getSelector(ltEvent) : "",
+    platform: navigator.platform,
   };
 }

@@ -17,6 +17,7 @@
     "webpack-dev-server": "^4.10.0"
   },
   "devDependencies": {
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "tslib": "^2.4.0"
   }
 }

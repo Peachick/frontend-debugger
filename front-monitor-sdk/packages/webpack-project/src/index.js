@@ -1,7 +1,10 @@
-import { init } from "sdk-helper"
+import { init, Client } from "sdk-helper"
 init()
+console.log(Client)
 
-// new Promise((resolve, reject) => reject(222))
+document.querySelector('#promise').addEventListener('click', () => {
+  new Promise((resolve, reject) => reject(222))
+})
 
 // @ts-ignore
 // console.log(s)
