@@ -280,6 +280,21 @@ React项目，用react-create-app启动项目，然后添加.vscode配置，点�
 ```
 ![](./static/imgs/21.png)
 
+### 线上Override调试
+可能有一种调试需要在线上环境下直接调试代码，对于简单的调试直接使用debugger即可，有时候需要改代码啥的，可能直接用debugger可能会变得有点麻烦，要是可以将线上运行的代码代理到本地，就可以在本地调试代码了，`Chrome Override DevTools`就是干这个的
+>此方式不能代理XHR请求
+
+首先打开`Source`面板，选择`Overrides`，然后点击`Select Folder for overrides`按钮，会打开本地文件系统让你选择一个文件夹，用来保存后面调试的代码（这里最好新建一个空文件夹）
+![](./static/imgs/41.png)
+![](./static/imgs/42.png)
+选择完后Chrome会提示访问权限，点击允许，此时`network`面板会出现一个黄色三角形，则证明Override第一步成功了
+![](./static/imgs/43.png)
+现在比如我们想调试一个`index.js`文件，点击netword面板，右击想要调试的文件，选择`Save for overrides`，此时当前文件就会被保存到目标文件夹里了
+![](./static/imgs/44.png)
+![](./static/imgs/45.png)
+现在可以用编辑器打开目标文件夹，进行修改，修改会同步保存到浏览器，而且刷新浏览器也同样会被代理到本地文件夹哦，如下：文件开头添加debugger
+![](./static/imgs/46.png)
+
 ## 线上调试（异常上报+监控系统+map映射）
 假如有一个场景，开发好的项目上线后，发现一个bug报错了，潜意识下会打开控制台看下哪里错了，但不幸的是，一般上线项目都会打包压缩，而且不会有soucemap，这让错误排查变得棘手。
 
