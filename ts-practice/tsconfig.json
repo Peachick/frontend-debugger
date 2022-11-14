@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES5",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "lib": ["DOM", "ESNext"],
+    "declaration": true,
+    "declarationDir": "./dist"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

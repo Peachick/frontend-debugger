@@ -1,0 +1,93 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Ts debugger",
+      "program": "${workspaceFolder}/app.js",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "command": "cd nest-debugger && npm start",
+      "name": "Nest Debugger",
+      "request": "launch",
+      "type": "node-terminal",
+      "sourceMapPathOverrides": {
+        "://?:*/*": "${workspaceFolder}/front-monitor-sdk/packages/sdk-helper/dist/*"
+      }
+    },
+    {
+      "command": "cd front-monitor-sdk && pnpm --filter=sdk-helper dev",
+      "name": "pnpm debugger",
+      "request": "launch",
+      "type": "node-terminal",
+      "sourceMaps": true
+    },
+    {
+      "name": "Debugger Sourcemap Node",
+      "program": "${workspaceFolder}/sourcemap-transfer/app.js",
+      "request": "launch",
+      "stopOnEntry": false,
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "name": "Debugger Exception",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:5500",
+      "webRoot": "${workspaceFolder}/trandition"
+    },
+    {
+      "command": "npm start",
+      "name": "Run React",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceRoot}/react-project",
+      "sourceMaps": true
+    },
+    {
+      "name": "Vue",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "VueCli",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}",
+      // 映射sourcemap
+      "sourceMapPathOverrides": {
+        // "webpack://?:*/*": "${workspaceFolder}/*"
+      }
+    },
+    {
+      "name": "React",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Launch Debugger",
+      "program": "${workspaceFolder}/node-debugger/app.js",
+      "request": "launch",
+      "stopOnEntry": true,
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach Debugger",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

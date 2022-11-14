@@ -6,7 +6,6 @@
 
 <script lang="ts" setup>
 const handleClick = (e) => {
-  debugger;
   console.log(e);
 };
 </script>
